@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
-using Computer_Rental_APP.Models.Devices;
-using Computer_Rental_APP.Models.Enums;
+using Computer_Rental_APP.Models.Interfaces;
 using Computer_Rental_APP.Models.Users;
 
 namespace Computer_Rental_APP.Models.Abstractions;
@@ -8,13 +7,30 @@ namespace Computer_Rental_APP.Models.Abstractions;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(Student), typeDiscriminator: "student")]
 [JsonDerivedType(typeof(Employee), typeDiscriminator: "employee")]
-public abstract class User(int id, string firstName, string lastName, string phone, string email, UserRole userRole)
+public abstract class User : IDisplayable
 {
     
-    public int Id { get; set; } = id;
-    public string FirstName { get; protected set; } = firstName;
-    public string LastName { get; protected set; } = lastName;
-    public string Phone { get; set; } = phone;
-    public string Email { get; set; } = email;
-    public UserRole UserRole { get; set; } = userRole;
+    public User() { }
+
+    public User(string firstName, string lastName, string email, int roleId)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        RoleId = roleId;
+    }
+
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public int RoleId { get; set; }
+
+    [JsonIgnore]
+    public UserRole? UserRole { get; set; }
+
+    public string ToShortRow() => 
+        $"{Id,-5} | {$"{FirstName} {LastName}",-25} | {UserRole?.Name ?? "Unknown",-15}"; 
+    public virtual string ToTemplateRow() => ToShortRow();
+    
 }

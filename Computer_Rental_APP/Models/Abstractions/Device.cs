@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Computer_Rental_APP.Models.Devices;
 using Computer_Rental_APP.Models.Enums;
+using Computer_Rental_APP.Models.Interfaces;
 
 namespace Computer_Rental_APP.Models.Abstractions;
 
@@ -8,13 +9,25 @@ namespace Computer_Rental_APP.Models.Abstractions;
 [JsonDerivedType(typeof(Laptop), typeDiscriminator: "laptop")]
 [JsonDerivedType(typeof(Projector), typeDiscriminator: "projector")]
 [JsonDerivedType(typeof(Camera), typeDiscriminator: "camera")]
-public abstract class Device(int id, string name, decimal dailyRate)
+public abstract class Device : IDisplayable
 {
-    
-    public int Id { get; } = id;
-    public string Name { get; protected set; } = name;
-    public decimal DailyRate { get;set; } = dailyRate;
-    public DeviceState State { get; protected set; } = DeviceState.Available;
-    
-   
+    protected Device(){}
+
+    protected Device(string name, decimal dailyRate)
+    {
+        Name = name;
+        DailyRate = dailyRate;
+        State = DeviceState.Available;
+    }
+
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal DailyRate { get; set; }
+    public DeviceState State { get; set; }
+
+
+    public string ToShortRow() =>
+        $"{Id,-5} | {$"{Name}",-25} | {State,-15} | {DailyRate, -5} | ";
+
+    public virtual string ToTemplateRow()=>ToShortRow();
 }
