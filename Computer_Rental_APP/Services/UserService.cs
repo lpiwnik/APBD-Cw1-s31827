@@ -14,6 +14,14 @@ public class UserService(string filePath,UserRoleService roleService):BaseServic
         return AddItem(user);
     }
 
+    protected override void OnLoad(List<User> items)
+    {
+        foreach (var item in items)
+        {
+            item.UserRole=roleService.GetRoleById(item.RoleId);
+        }
+    }
+
     public OperationResult RemoveUser(User user) =>DeleteItem(user);
     
     public List<User> GetUsersList() => GetItemsList();

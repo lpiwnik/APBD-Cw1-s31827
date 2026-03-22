@@ -24,7 +24,7 @@ public abstract class User(string firstName, string lastName, string email, int 
 
 
     public string ToShortRow() =>
-        $"{Id,-5} | {$"{FirstName} {LastName}",-25} | {UserRole?.Name ?? "Unknown",-15}";
+        $"{Id,-5} | {$"{FirstName} {LastName}",-25} | {UserRole?.Name ??"Unknown",-15}";
 
     public virtual string ToTemplateRow() => ToShortRow();
 }

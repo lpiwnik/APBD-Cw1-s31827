@@ -23,6 +23,6 @@ public class DeviceService(string filePath):BaseService<Device>(filePath)
     public List<Device> GetDevicesList(DeviceState state)=>
         GetItemsList().Where(x => x.State == state).ToList();
     
-    public Device? GetDevice(int deviceId) => GetItemsList().FirstOrDefault(x => x.Id == deviceId);
+    public Device? GetDeviceById(int deviceId) => GetItemsList().FirstOrDefault(x => x.Id == deviceId);
     
 }
