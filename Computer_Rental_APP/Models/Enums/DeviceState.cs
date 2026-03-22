@@ -7,4 +7,4 @@ public enum DeviceState
     Broken,
     InService,
     Lost
-} 
+}

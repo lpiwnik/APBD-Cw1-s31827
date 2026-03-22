@@ -1,24 +1,26 @@
+using System.Text.Json.Serialization;
 using Computer_Rental_APP.Models.Abstractions;
 using Computer_Rental_APP.Models.Enums;
 
 namespace Computer_Rental_APP.Models.Users;
 
-public class Employee : User
+[method: JsonConstructor]
+public class Employee(
+    string firstName,
+    string lastName,
+    string email,
+    int roleId,
+    string employeeAlias,
+    EmploymentType employmentType,
+    DateTime hireDate)
+    : User(firstName, lastName, email, roleId)
 {
-    
-    public Employee() : base() { }
+    [JsonInclude] public string EmployeeAlias { get; private set; } = employeeAlias;
 
-    
-    public Employee(string firstName, string lastName, string email, int roleId) 
-        : base(firstName, lastName, email, roleId)
-    {
-        HireDate = DateTime.Now;
-    }
+    [JsonInclude] public EmploymentType EmploymentType { get; protected internal set; } = employmentType;
 
-    private string EmployeeAlias { get; set; } = string.Empty;
-    private EmploymentType EmploymentType { get; set; } = EmploymentType.FullTime;
-    private DateTime HireDate { get; set; }
-    
-    public override string ToTemplateRow() => 
-        base.ToTemplateRow()+$" | {EmployeeAlias,-12} |  {EmploymentType,-2} | {HireDate}";
+    [JsonInclude] public DateTime HireDate { get; private set; } = hireDate;
+
+    public override string ToTemplateRow() =>
+        base.ToTemplateRow() + $" | {EmployeeAlias,-12} |  {EmploymentType,-2} | {HireDate}";
 }

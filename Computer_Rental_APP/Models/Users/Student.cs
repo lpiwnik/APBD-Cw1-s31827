@@ -1,22 +1,28 @@
+using System.Text.Json.Serialization;
 using Computer_Rental_APP.Models.Abstractions;
 using Computer_Rental_APP.Models.Enums;
 
 namespace Computer_Rental_APP.Models.Users;
 
-public class Student : User
+[method: JsonConstructor]
+public class Student(
+    string firstName,
+    string lastName,
+    string email,
+    int roleId,
+    string studentNumber,
+    int semester,
+    StudyLevel studyLevel)
+    : User(firstName, lastName, email, roleId)
 {
-    
-    public Student() : base() { }
-    
-    public Student(string firstName, string lastName, string email, int roleId) 
-        : base(firstName, lastName, email, roleId){}
+    [JsonInclude] public string StudentNumber { get; init; } = studentNumber;
 
-    public string StudentNumber { get; init; } = string.Empty;
-    private int Semester { get; set; } = 1;
-    private StudyLevel StudyLevel { get; set; } = StudyLevel.Engineer;
+    [JsonInclude] public int Semester { get; protected internal set; } = semester;
+
+    [JsonInclude] public StudyLevel StudyLevel { get; protected internal set; } = studyLevel;
 
     public override string ToTemplateRow()
     {
-        return base.ToTemplateRow()+$" | {StudentNumber,-12} | {Semester,-2} | {StudyLevel}";
+        return base.ToTemplateRow() + $" | {StudentNumber,-12} | {Semester,-2} | {StudyLevel}";
     }
 }

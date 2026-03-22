@@ -7,30 +7,24 @@ namespace Computer_Rental_APP.Models.Abstractions;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(Student), typeDiscriminator: "student")]
 [JsonDerivedType(typeof(Employee), typeDiscriminator: "employee")]
-public abstract class User : IDisplayable
+[method: JsonConstructor]
+public abstract class User(string firstName, string lastName, string email, int roleId)
+    : IEntity, IDisplayable
 {
-    
-    public User() { }
+    [JsonInclude] public int Id { get; set; }
+    [JsonInclude] public string FirstName { get; private set; } = firstName;
 
-    public User(string firstName, string lastName, string email, int roleId)
-    {
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        RoleId = roleId;
-    }
+    [JsonInclude] public string LastName { get; private set; } = lastName;
 
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public int RoleId { get; set; }
+    [JsonInclude] public string Email { get; protected internal set; } = email;
 
-    [JsonIgnore]
-    public UserRole? UserRole { get; set; }
+    [JsonInclude] public int RoleId { get; protected internal set; } = roleId;
 
-    public string ToShortRow() => 
-        $"{Id,-5} | {$"{FirstName} {LastName}",-25} | {UserRole?.Name ?? "Unknown",-15}"; 
+    [JsonIgnore] public UserRole? UserRole { get; set; }
+
+
+    public string ToShortRow() =>
+        $"{Id,-5} | {$"{FirstName} {LastName}",-25} | {UserRole?.Name ?? "Unknown",-15}";
+
     public virtual string ToTemplateRow() => ToShortRow();
-    
 }

@@ -1,22 +1,17 @@
+using System.Text.Json.Serialization;
 using Computer_Rental_APP.Models.Abstractions;
 
 namespace Computer_Rental_APP.Models.Devices;
 
-public class Laptop: Device{
+[method: JsonConstructor]
+public class Laptop(string name, decimal dailyRate, int ramSizeGb, string processorModel)
+    : Device(name, dailyRate)
+{
+    [JsonInclude] public int RamSizeGb { get; protected internal set; } = ramSizeGb;
+    [JsonInclude] public string ProcessorModel { get; protected internal set; } = processorModel;
 
-        public Laptop():base(){}
-
-        public Laptop( string name, decimal dailyRate, int ramSizeGb, string processorModel)
-            :base(name, dailyRate)
-        {
-            RamSizeGb = ramSizeGb;
-            ProcessorModel = processorModel;
-        }
-        public int RamSizeGb { get; set; }
-        public string ProcessorModel { get; set; }
-
-        public override string ToTemplateRow()
-            {
-                return base.ToTemplateRow()+$"{RamSizeGb,-15} | {ProcessorModel}";
-            }
+    public override string ToTemplateRow()
+    {
+        return base.ToTemplateRow() + $"{RamSizeGb,-15} | {ProcessorModel}";
+    }
 }

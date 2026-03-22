@@ -1,22 +1,15 @@
+using System.Text.Json.Serialization;
 using Computer_Rental_APP.Models.Abstractions;
 
 namespace Computer_Rental_APP.Models.Devices;
 
-public class Camera : Device 
+[method: JsonConstructor]
+public class Camera(string name, decimal dailyRate, int shutterCount, string lensType)
+    : Device(name, dailyRate)
 {
-    public Camera() : base() { } // Ważny dla deserializacji
-    
-    public Camera(string name, decimal dailyRate, int shutterCount, string lensType)
-        : base(name, dailyRate)
-    {
-        ShutterCount = shutterCount;
-        LensType = lensType;
-    }
+    [JsonInclude] public int ShutterCount { get; protected internal set; } = shutterCount;
 
-    public int ShutterCount { get; set; }
-    
-    
-    public string LensType { get; set; } 
+    [JsonInclude] public string LensType { get; protected internal set; } = lensType;
 
     public override string ToTemplateRow()
     {

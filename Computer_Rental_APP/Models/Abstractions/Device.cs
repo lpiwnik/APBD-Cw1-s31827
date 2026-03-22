@@ -9,25 +9,19 @@ namespace Computer_Rental_APP.Models.Abstractions;
 [JsonDerivedType(typeof(Laptop), typeDiscriminator: "laptop")]
 [JsonDerivedType(typeof(Projector), typeDiscriminator: "projector")]
 [JsonDerivedType(typeof(Camera), typeDiscriminator: "camera")]
-public abstract class Device : IDisplayable
+[method: JsonConstructor]
+public abstract class Device(string name, decimal dailyRate) : IEntity, IDisplayable
 {
-    protected Device(){}
+    [JsonInclude] public int Id { get; set; }
+    [JsonInclude] public string Name { get; private set; } = name;
 
-    protected Device(string name, decimal dailyRate)
-    {
-        Name = name;
-        DailyRate = dailyRate;
-        State = DeviceState.Available;
-    }
+    [JsonInclude] public decimal DailyRate { get; protected internal set; } = dailyRate;
 
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public decimal DailyRate { get; set; }
-    public DeviceState State { get; set; }
+    [JsonInclude] public DeviceState State { get; protected internal set; } = DeviceState.Available;
 
 
     public string ToShortRow() =>
-        $"{Id,-5} | {$"{Name}",-25} | {State,-15} | {DailyRate, -5} | ";
+        $"{Id,-5} | {$"{Name}",-25} | {State,-15} | {DailyRate,-5} | ";
 
-    public virtual string ToTemplateRow()=>ToShortRow();
+    public virtual string ToTemplateRow() => ToShortRow();
 }
