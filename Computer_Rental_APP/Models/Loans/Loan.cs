@@ -15,6 +15,10 @@ public class Loan(int userId, int deviceId, DateTime dueDateTime) : IEntity, IDi
     [JsonInclude] public DateTime DueDateTime { get; protected internal set; } = dueDateTime;
     [JsonInclude] public DateTime ReturnedDateTime { get; protected internal set; }
     [JsonInclude] public LoanStatus LoanStatus { get; protected internal set; } = LoanStatus.Active;
+    
+    [JsonInclude] public decimal SnapDeviceDailyRate { get; protected internal set; }
+    
+    [JsonInclude] public decimal SnapPenaltyRate { get; protected internal set; }
     [JsonInclude] public decimal TotalFee { get; protected internal set; }
     
     [JsonIgnore] public User? User { get; set; }
@@ -47,7 +51,7 @@ public class Loan(int userId, int deviceId, DateTime dueDateTime) : IEntity, IDi
                $"  Borrowed:  {LoanDate:yyyy-MM-dd HH:mm}\n" +
                $"  Deadline:  {DueDateTime:yyyy-MM-dd HH:mm}\n" +
                $"  Returned:  {returnInfo}\n" +
-               $"  TOTAL FEE: {feeDisplay} PLN\n" +
+               $"  TOTAL FEE: {feeDisplay}\n" +
                "------------------------------------------------------------";;
     }
 }

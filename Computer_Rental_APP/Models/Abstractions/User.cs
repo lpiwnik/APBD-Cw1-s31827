@@ -7,6 +7,7 @@ namespace Computer_Rental_APP.Models.Abstractions;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(Student), typeDiscriminator: "student")]
 [JsonDerivedType(typeof(Employee), typeDiscriminator: "employee")]
+[JsonDerivedType(typeof(StaffUser), typeDiscriminator: "staffUser")]
 [method: JsonConstructor]
 public abstract class User(string firstName, string lastName, string email, int roleId)
     : IEntity, IDisplayable
