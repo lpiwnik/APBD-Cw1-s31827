@@ -35,7 +35,7 @@ public class UserService(string filePath, UserRoleService roleService) : BaseSer
     {
         var role=roleService.GetRoleById(user.RoleId);
         if (role.ObjectData == null)
-            return OperationResult.Failure($"Cannot add user. Role {user.RoleId} not found.", OperationStatus.NotFound);
+            return role;
         
         user.UserRole=role.ObjectData;
         
@@ -64,12 +64,8 @@ public class UserService(string filePath, UserRoleService roleService) : BaseSer
         var role = roleService.GetRoleById(roleId);
         
         if (role.ObjectData == null)
-        {
-            return OperationResult.Failure(
-                $"Cannot change role. Role with ID {roleId} does not exist.", 
-                OperationStatus.NotFound
-            );
-        }
+            return role;
+        
 
         return UpdateItemProperty(
             userId,

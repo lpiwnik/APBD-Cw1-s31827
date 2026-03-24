@@ -73,25 +73,33 @@ public class LoanService(string filePath, UserService userService, DeviceService
     
     public OperationResult ReturnLoan(int loanId)
     {
-        var dateEnd=DateTime.Now;
+        var dateEnd = DateTime.Now;
         var loanResult = GetItemById(loanId);
-        if (loanResult.Status!=OperationStatus.Success) return loanResult;
+        if (loanResult.Status != OperationStatus.Success) return loanResult;
 
         var loan = loanResult.ObjectData!;
 
         if (loan.LoanStatus is not (LoanStatus.Active or LoanStatus.Overdue))
-            return OperationResult.Failure("Loan is already returned or cancelled.", OperationStatus.ValidationError);
+            return OperationResult.Failure("Loan is already returned.", OperationStatus.ValidationError);
 
+       
         var totalRentedDays = (decimal)Math.Max(1, Math.Ceiling((dateEnd - loan.LoanDate).TotalDays));
-        var delay = (dateEnd - loan.DueDateTime).TotalDays;
-        var daysOverdue = (decimal)Math.Max(0, Math.Ceiling(delay));
 
+      
+        decimal daysOverdue = 0;
+        if (dateEnd > loan.DueDateTime)
+        {
+            daysOverdue = (decimal)Math.Ceiling((dateEnd - loan.DueDateTime).TotalDays);
+        }
+
+       
         var standardPrice = totalRentedDays * loan.SnapDeviceDailyRate;
         var penaltyFee = daysOverdue * loan.SnapPenaltyRate;
         var totalFee = standardPrice + penaltyFee;
+    
         var finalStatus = daysOverdue > 0 ? LoanStatus.ReturnedLate : LoanStatus.Returned;
 
-        if (loan.Device != null)
+        if (loan.Device != null || loan.DeviceId > 0)
         {
             deviceService.UpdateDeviceState(loan.DeviceId, DeviceState.Available);
         }
@@ -104,7 +112,7 @@ public class LoanService(string filePath, UserService userService, DeviceService
                 l.TotalFee = totalFee;
                 l.LoanStatus = finalStatus;
             },
-            $"Returned ID:{loanId}. Fee: {totalFee} (Days: {totalRentedDays}, Overdue: {daysOverdue})"
+            $"Returned ID:{loanId}. Total: {totalFee:C} (Rent: {standardPrice:C}, Penalty: {penaltyFee:C})"
         );
     }
     
@@ -114,6 +122,8 @@ public class LoanService(string filePath, UserService userService, DeviceService
     public List<Loan> GetOverdueLoans() => 
         GetItemsList().Where(l => l.LoanStatus == LoanStatus.Active && DateTime.Now > l.DueDateTime).ToList();
     
+    public void SimulateDueDate(int loanId, DateTime newDue) =>
+        UpdateItemProperty(loanId, l => l.DueDateTime = newDue, $"DueDate backdated for loan {loanId}");
     public List<Loan> GetLoansList() => GetItemsList();
     public OperationResult<Loan> GetLoanById(int loanId) => GetItemById(loanId);
 

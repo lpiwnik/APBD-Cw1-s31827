@@ -9,7 +9,7 @@ public class DeviceService(string filePath) : BaseService<Device>(filePath)
     public OperationResult AddDevice(Device device) => AddItemWithResult(device, device.Name);
 
 
-    public OperationResult RemoveDevice(int deviceId) => DeleteItemWithResult(deviceId, $"{deviceId}");
+    public OperationResult RemoveDevice(int deviceId) => DeleteItemWithResult(deviceId, $" Id-{deviceId}");
 
     public OperationResult UpdateDeviceDailyRate(int deviceId, decimal dailyRate)
     {
