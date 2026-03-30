@@ -2,11 +2,11 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ "main" ] # Buduje automatycznie po pushu na main
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest # To jest ten szybki Linux amd64
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,12 +20,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-- name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          # context mówi: "tu są pliki źródłowe"
           context: ./Computer_Rental_APP
-          # file mówi: "tu konkretnie jest mój Dockerfile"
           file: ./Computer_Rental_APP/Dockerfile
           push: true
           tags: lpiwnik/computer-rental:v1
