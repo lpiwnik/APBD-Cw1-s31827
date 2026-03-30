@@ -20,10 +20,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+- name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          # context mówi: "tu są pliki źródłowe"
+          context: ./Computer_Rental_APP
+          # file mówi: "tu konkretnie jest mój Dockerfile"
+          file: ./Computer_Rental_APP/Dockerfile
           push: true
           tags: lpiwnik/computer-rental:v1
-          platforms: linux/amd64,linux/arm64 # Buduje obie wersje naraz
+          platforms: linux/amd64,linux/arm64
