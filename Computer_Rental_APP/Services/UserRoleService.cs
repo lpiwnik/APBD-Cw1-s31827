@@ -14,7 +14,12 @@ public class UserRoleService(string filePath) : BaseService<UserRole>(filePath)
         OperationResult.Ok("System initialized with default roles: Unassigned and Admin.");
     }
 
-    public OperationResult AddRole(UserRole role) => AddItemWithResult(role, role.Name!);
+    public OperationResult AddRole(UserRole role)
+    {
+        return GetItemsList().Any(r => r.Name.Equals(role.Name, StringComparison.CurrentCultureIgnoreCase)) 
+            ? OperationResult.Failure($"Role {role.Name} already exists", OperationStatus.AlreadyExists) 
+            : AddItemWithResult(role, role.Name!);
+    }
 
 
     public OperationResult UpdatePenaltyRate(int roleId, decimal penaltyRate)

@@ -27,8 +27,8 @@ public class Loan(int userId, int deviceId, DateTime dueDateTime) : IEntity, IDi
 
     public string ToShortRow()=>
     $"{Id,-5} | " +
-    $"{DeviceId,3} : {Device?.Name ?? "N/A",-15} | " +
-    $"{UserId,3} : {User?.FirstName ?? "N/A"} {User?.LastName ?? "",-25} | " +
+    $"{DeviceId,3} : {Device?.Name ?? "N/A",-14} | " +
+    $"{UserId,3} : {User?.FirstName ?? "N/A",-10} {User?.LastName ?? "",-10} | " +
     $"{LoanStatus,-12}";
     
 

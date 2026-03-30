@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Computer_Rental_APP", "Computer_Rental_APP\Computer_Rental_APP.csproj", "{AFE59581-CA90-4383-8139-C7AA6A6CB314}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{3B650512-6CB1-4BED-9202-65F3AFD4614A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

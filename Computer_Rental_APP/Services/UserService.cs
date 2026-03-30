@@ -38,6 +38,28 @@ public class UserService(string filePath, UserRoleService roleService) : BaseSer
             return role;
         
         user.UserRole=role.ObjectData;
+
+        if (user is Employee newEmployee)
+        {
+            
+
+            if (GetItemsList().OfType<Employee>()
+                .Any(e => e.EmployeeAlias.Equals(
+                    newEmployee.EmployeeAlias, 
+                    StringComparison.OrdinalIgnoreCase)
+                ))
+                return OperationResult.Failure(
+                    $"Employee alias {newEmployee.EmployeeAlias} is already taken.",
+                    OperationStatus.AlreadyExists);
+        }
+        else if (user is Student newStudent)
+        {
+            if (GetItemsList().OfType<Student>()
+                .Any(s => s.StudentNumber.Equals(newStudent.StudentNumber, StringComparison.OrdinalIgnoreCase)))
+                return OperationResult.Failure(
+                    $"Student with ID number {newStudent.StudentNumber} already exists in the system.",
+                    OperationStatus.AlreadyExists);
+        }
         
         return AddItemWithResult(user,user.FirstName + " " + user.LastName);
     }

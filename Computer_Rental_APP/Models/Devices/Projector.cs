@@ -12,6 +12,6 @@ public class Projector(string name, decimal dailyRate, string resolution, int la
 
     public override string ToTemplateRow()
     {
-        return base.ToTemplateRow() + $"{Resolution,-15} | {LampHoursUsed}";
+        return base.ToTemplateRow() + $" | {Resolution,-15} | {LampHoursUsed}";
     }
 }

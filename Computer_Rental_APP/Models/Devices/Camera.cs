@@ -13,7 +13,6 @@ public class Camera(string name, decimal dailyRate, int shutterCount, string len
 
     public override string ToTemplateRow()
     {
-        // Sprawdź czy na pewno masz " | " przed ShutterCount
-        return base.ToShortRow() + $"{ShutterCount,-15} | {LensType} ";
+        return base.ToShortRow() + $" | {ShutterCount,-15} | {LensType} ";
     }
 }

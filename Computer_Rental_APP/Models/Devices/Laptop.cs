@@ -12,6 +12,6 @@ public class Laptop(string name, decimal dailyRate, int ramSizeGb, string proces
 
     public override string ToTemplateRow()
     {
-        return base.ToTemplateRow() + $"{RamSizeGb,-15} | {ProcessorModel}";
+        return base.ToTemplateRow() + $" | {RamSizeGb,-15} | {ProcessorModel}";
     }
 }

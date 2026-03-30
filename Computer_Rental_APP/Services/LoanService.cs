@@ -91,8 +91,7 @@ public class LoanService(string filePath, UserService userService, DeviceService
         {
             daysOverdue = (decimal)Math.Ceiling((dateEnd - loan.DueDateTime).TotalDays);
         }
-
-       
+         
         var standardPrice = totalRentedDays * loan.SnapDeviceDailyRate;
         var penaltyFee = daysOverdue * loan.SnapPenaltyRate;
         var totalFee = standardPrice + penaltyFee;

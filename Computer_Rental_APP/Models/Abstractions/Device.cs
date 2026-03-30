@@ -21,7 +21,7 @@ public abstract class Device(string name, decimal dailyRate) : IEntity, IDisplay
 
 
     public string ToShortRow() =>
-        $"{Id,-5} | {$"{Name}",-25} | {State,-15} | {DailyRate,-5} | ";
+        $"{Id,-5} | {$"{Name}",-25} | {State,-15} | {DailyRate,-5}";
 
     public virtual string ToTemplateRow() => ToShortRow();
 }

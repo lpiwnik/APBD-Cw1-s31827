@@ -7,5 +7,6 @@ public enum OperationStatus
     Busy,
     LimitExceeded,
     ValidationError,
-    CriticalError
+    CriticalError,
+    AlreadyExists
 }
